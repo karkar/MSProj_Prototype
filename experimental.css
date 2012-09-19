@@ -1,0 +1,21 @@
+.student-id
+{
+    width: 80px;
+}
+
+.parameter
+{
+	text-align: center;
+}
+
+.divTest
+{
+    width: 100px;
+	//height: 0px;
+    height: 100px;
+    overflow:hidden;
+    //padding:50px;
+    background: rgba(0,0,255,0.3);
+    border:1px dashed #000;
+    border-bottom:1px dashed #000;
+} 
