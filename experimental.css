@@ -1,3 +1,8 @@
+/**
+ * @author Ravi
+ */
+
+
 .divsvg
 {
     width: 100px;
@@ -6,6 +11,55 @@
     overflow:hidden;
     //padding:50px;
     //background: rgba(0,0,255,0.3);
-    border:1px dashed #000;
-    border-bottom:1px dashed #000;
+    border:0.5px #000;
+    //border-bottom:1px dashed #000;
 } 
+
+#wrapper
+{
+	width=9000px;
+}
+
+#left_content
+{
+	float: left;
+	height:auto;
+	width:600px;
+}
+
+#right_content
+{
+	float:right;
+	height:auto;
+	width:300px;
+}
+
+.red
+{
+background-color:#E00013;
+opacity: 0.5;
+display:block;
+}
+
+#labeldiv
+{
+	position:absolute;
+	margin-top: 445px;
+	margin-left: -30px;
+}
+
+ul
+{
+	 list-style:none;
+}
+li {
+    float: left;
+	
+  }
+  
+
+.labels
+{
+	width:100px;
+	display:block;
+}

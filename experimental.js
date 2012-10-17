@@ -1,79 +1,78 @@
+/**
+ * @author Ravi
+ */
+
+
 $(document).ready( function() {
     var min=50;
     var max=150;
     var mid=100;
 	
-	var students = d3.csv('test.csv', function(csv) {
-	tabulate(csv, ["name","behavior", "sleep", "seizures", "medicine", "bm"]);
-	
-	for(i = 2 ; i < 13; i++){
-	for(j = 1 ; j < 7; j++){
+	var students = d3.csv('output.csv', function(csv) {
+	tabulate(csv, ["username","behavior", "medication", "sleep", "bm"]);
+	// r is the number of rows in the csv (without considering the title row)
+	var r = csv.length;
+	/*var ages = d3.keys(csv[0]).filter(function(key) {
+    	return key != "username" && key != "Total";
+  	});
+
+  	d3.selectAll("thead td").data(ages).on("click", function(k) {
+			   	tr.sort(function(a, b) { return (b[k] / b.Total) - (a[k] / a.Total); });
+	});*/
+
+	// loop through each row, 2 to 12, ignoring title row and going through all 11 rows
+	for(i = 2 ; i <= r+1; i++){
+	// loop though each cell in the row, 1 thorugh 5
+	for(j = 1 ; j <= 5; j++){
+		//select svg associated with each cell
 		var str = "svg_"+i+"_"+j;
+		//append a rectangle to each svg and assign an id
+		d3.selectAll("#"+str)
+			.append("rect")
+				.attr("width","100%")
+				.attr("height","100%")
+				.attr("id","rect_"+i+"_"+j);
 		
-	
-		
-		d3.selectAll("#"+str).append("rect").attr("width","100%").attr("height","100%").attr("id","rect_"+i+"_"+j);
 		var rectid = "rect_"+i+"_"+j;
 			var name=csv[i-2];
-			
+				
 				//assign colors to each cell in a row. i.e. check the cell index (1 through 6) and use appropriate boundary conditions
 				if (rectid == "rect_"+i+"_"+1){
-					var svgParent = $("#"+rectid).closest("td").attr("id");
-					console.log(svgParent);
-					d3.select("#"+svgParent).text(function(d) { return d.value; });
-					console.log(name.name);
+					var svgParent = $("#"+rectid)
+										.closest("td")
+										.attr("id");
+					//console.log(svgParent);
+					d3.select("#"+svgParent)
+						.text(function(d) { return d.value; });
 				} else if (rectid == "rect_"+i+"_"+2){
-					if(name.behavior > 400){
-					d3.select("#"+rectid).attr("fill","#E00013"); //red
-					} else if ( name.behavior < 300){
-					d3.select("#"+rectid).attr("fill","#339900"); // green
-					} else {
-					d3.select("#"+rectid).attr("fill","#FF9900"); //orange
-					}
+					d3.select("#"+rectid).attr("data-behavior", name.behavior);
+				    d3.select("#"+rectid).attr("class","behaviors");
 				} else if (rectid == "rect_"+i+"_"+3){
-					if(name.sleep > 8.5){
-					d3.select("#"+rectid).attr("fill","#FF9900");
-					} else if ( name.sleep < 7){
-					d3.select("#"+rectid).attr("fill","#E00013");
-					} else {
-					d3.select("#"+rectid).attr("fill","#339900"); 
-					}
+				    d3.select("#"+rectid).attr("data-meds", name.medication);
+				    d3.select("#"+rectid).attr("class","medications");
 				} else if (rectid == "rect_"+i+"_"+4){
+					d3.select("#"+rectid).attr("data-sleep", name.sleep);
+				    d3.select("#"+rectid).attr("class","sleeps");
+				} /*else if (rectid == "rect_"+i+"_"+4){
 					if(name.seizures > 30){
-					d3.select("#"+rectid).attr("fill","#E00013");
+					d3.select("#"+rectid).attr("fill","#A52A2A");
 					} else if ( name.seizures < 20){
-					d3.select("#"+rectid).attr("fill","#339900");
+					d3.select("#"+rectid).attr("fill","#41AB5D");
 					} else {
-					d3.select("#"+rectid).attr("fill","#FF9900"); 
+					d3.select("#"+rectid).attr("fill","#EE9A49"); 
 					}
-				} else if (rectid == "rect_"+i+"_"+5){
-					if(name.medicine > 7){
-					d3.select("#"+rectid).attr("fill","#E00013");
-					} else if ( name.medicine < 5){
-					d3.select("#"+rectid).attr("fill","#339900");
-					} else {
-					d3.select("#"+rectid).attr("fill","#FF9900"); 
-					}
-				} else {
-					if(name.bm > 1.3){
-					d3.select("#"+rectid).attr("fill","#E00013");
-					} else if ( name.bm < 0.7){
-					d3.select("#"+rectid).attr("fill","#FF9900");
-					} else {
-					d3.select("#"+rectid).attr("fill","#339900"); 
-					}
+				} */ else if (rectid == "rect_"+i+"_"+5) {
+					d3.select("#"+rectid).attr("data-bm", name.bm);
+				    d3.select("#"+rectid).attr("class","bms");
 				} 
 			
 			//show tooltips for all the cells
 			d3.selectAll("#"+rectid).append("svg:title")
-			.text(function(d) { return d.value; });
-			
+				.text(function(d) { return d.value; });
+
 		}
 		
-		
 	}
-	
-		
 	//make all the cells in the table resizable. fix 3 levels of resize (50px, 100px, 150px)
     $( ".divsvg" ).resizable({ //make all the cells with class = "divsvg" as resizable
         maxHeight: 200,
@@ -158,16 +157,14 @@ $(document).ready( function() {
     });
 	
 	
-})
-	
-
+});
 	
 
 function tabulate(data, columns){ //, ["behavior", "sleep", "seizures", "medicine", "bm"]	
-	var table = d3.select("body").append("table"),
+	var table = d3.select("#left_content").append("table"),
 		thead = table.append("thead"),
 		tbody = table.append("tbody");
-		
+
 	 // append the header row
     thead.append("tr")
         .selectAll("th")
@@ -190,7 +187,7 @@ function tabulate(data, columns){ //, ["behavior", "sleep", "seizures", "medicin
             });
         })
         .enter()
-        .append("td")
+        .append("td");
     
 	var divSVG = d3.selectAll("td")
 					.append("div")
@@ -216,14 +213,134 @@ function tabulate(data, columns){ //, ["behavior", "sleep", "seizures", "medicin
 	
     return table;
 }
+	
 
+$( "#behaviorslider" ).slider({
+            range: true,
+            orientation:"vertical",
+            min: 0,
+            max: 1000,
+            step: 10,
+            values: [ 300, 400 ],
+            slide: function( event, ui ) {
+                $( "#count1" ).val( ui.values[ 0 ] + " - " + ui.values[ 1 ] );
+                $('.behaviors').each(function(i, obj){
+                    var behValue = $(obj).data('behavior');
 
+                    if(behValue == -1){
+                    	$(obj).attr("fill","#BDBDBD");
+                    } else if(behValue > ui.values[ 1 ]){
+						$(obj).attr("fill","#A52A2A");
+					} else if (behValue < ui.values[ 0 ]){
+						$(obj).attr("fill","#41AB5D");
+					} else {
+						$(obj).attr("fill","#EE9A49"); 
+					}
+                });
+            }
+    });
+$( "#count1" ).val( $( "#behaviorslider" )
+				.slider( "values", 0 ) + " - " + $( "#behaviorslider" )
+				.slider( "values", 1 ) );
+/*var valor0 = $("#behaviorslider").slider( "values", 0); 
+var valor1 = $("#behaviorslider").slider( "values", 1); 
+console.log(valor0);       
+console.log(valor1); */
 
-var context = d3.select("body")
+$( "#medicationslider" ).slider({
+            range: true,
+            orientation:"vertical",
+            min: 0,
+            max: 20,
+            step: 1,
+            values: [ 7, 10 ],
+            slide: function( event, ui ) {
+                $( "#count2" ).val( ui.values[ 0 ] + " - " + ui.values[ 1 ] );
+                $('.medications').each(function(i, obj){
+                    var medValue = $(obj).data('meds');
+
+                    if(medValue == -1){
+                    	$(obj).attr("fill","#BDBDBD");
+                    } else if(medValue > ui.values[ 1 ]){
+						$(obj).attr("fill","#A52A2A");
+					} else if (medValue < ui.values[ 0 ]){
+						$(obj).attr("fill","#41AB5D");
+					} else {
+						$(obj).attr("fill","#EE9A49"); 
+					}
+                });
+            }
+    });
+$( "#count2" ).val( $( "#medicationslider" )
+				.slider( "values", 0 ) + " - " + $( "#medicationslider" )
+				.slider( "values", 1 ) );
+
+$( "#sleepslider" ).slider({
+            range: true,
+            orientation:"vertical",
+            min: 0,
+            max: 12,
+            step: 0.5,
+            values: [ 7, 8.5 ],
+            slide: function( event, ui ) {
+                $( "#count3" ).val( ui.values[ 0 ] + " - " + ui.values[ 1 ] );
+                $('.sleeps').each(function(i, obj){
+                    var sleepValue = $(obj).data('sleep');
+
+                    if(sleepValue == -1){
+                    	$(obj).attr("fill","#BDBDBD");
+                    } else if(sleepValue > ui.values[ 1 ]){
+						$(obj).attr("fill","#A52A2A");
+					} else if (sleepValue < ui.values[ 0 ]){
+						$(obj).attr("fill","#EE9A49");
+					} else {
+						$(obj).attr("fill","#41AB5D"); 
+					}
+                });
+            }
+    });
+$( "#count3" ).val( $( "#sleepslider" )
+				.slider( "values", 0 ) + " - " + $( "#sleepslider" )
+				.slider( "values", 1 ) );
+
+$( "#bmslider" ).slider({
+            range: true,
+            orientation:"vertical",
+            min: 0,
+            max: 1,
+            step: 0.01,
+            values: [ 0.7, 1 ],
+            slide: function( event, ui ) {
+                $( "#count4" ).val( ui.values[ 0 ] + " - " + ui.values[ 1 ] );
+                $('.bms').each(function(i, obj){
+                    var bmValue = $(obj).data('bm');
+
+                    if(bmValue == -1){
+                    	$(obj).attr("fill","#BDBDBD");
+                    } else if(bmValue > ui.values[ 1 ]){
+						$(obj).attr("fill","#A52A2A");
+					} else if (bmValue < ui.values[ 0 ]){
+						$(obj).attr("fill","#41AB5D");
+					} else {
+						$(obj).attr("fill","#EE9A49"); 
+					}
+                });
+            }
+    });
+$( "#count4" ).val( $( "#bmslider" )
+				.slider( "values", 0 ) + " - " + $( "#bmslider" )
+				.slider( "values", 1 ) );
+
+var context = d3.select("#right_content")
 				.append("div")
 					.attr("id","context_box")
+				.append("p")
+					.text(function(d) {
 					
-					
-
-	
+									
+						var myMouseOverFunction = function() {
+							var selection = d3.select(this);
+							return d.value;
+						}		
+					});
 });
