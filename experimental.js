@@ -12,13 +12,14 @@ $(document).ready( function() {
 	tabulate(csv, ["username","behavior", "medication", "sleep", "bm"]);
 	// r is the number of rows in the csv (without considering the title row)
 	var r = csv.length;
-	/*var ages = d3.keys(csv[0]).filter(function(key) {
-    	return key != "username" && key != "Total";
+
+	var ages = d3.keys(csv[0]).filter(function(key) {
+    	return key != "username";
   	});
 
-  	d3.selectAll("thead td").data(ages).on("click", function(k) {
-			   	tr.sort(function(a, b) { return (b[k] / b.Total) - (a[k] / a.Total); });
-	});*/
+  	d3.selectAll("thead th").data(ages).on("click", function(k) {
+			   	tr.sort(function(a, b) { return (b[k] / b.behavior) - (a[k] / a.behavior); });
+	});
 
 	// loop through each row, 2 to 12, ignoring title row and going through all 11 rows
 	for(i = 2 ; i <= r+1; i++){
@@ -228,7 +229,7 @@ $( "#behaviorslider" ).slider({
                     var behValue = $(obj).data('behavior');
 
                     if(behValue == -1){
-                    	$(obj).attr("fill","#BDBDBD");
+                    	$(obj).attr("fill","#D9D9D9");
                     } else if(behValue > ui.values[ 1 ]){
 						$(obj).attr("fill","#A52A2A");
 					} else if (behValue < ui.values[ 0 ]){
@@ -260,7 +261,7 @@ $( "#medicationslider" ).slider({
                     var medValue = $(obj).data('meds');
 
                     if(medValue == -1){
-                    	$(obj).attr("fill","#BDBDBD");
+                    	$(obj).attr("fill","#D9D9D9");
                     } else if(medValue > ui.values[ 1 ]){
 						$(obj).attr("fill","#A52A2A");
 					} else if (medValue < ui.values[ 0 ]){
@@ -288,7 +289,7 @@ $( "#sleepslider" ).slider({
                     var sleepValue = $(obj).data('sleep');
 
                     if(sleepValue == -1){
-                    	$(obj).attr("fill","#BDBDBD");
+                    	$(obj).attr("fill","#D9D9D9");
                     } else if(sleepValue > ui.values[ 1 ]){
 						$(obj).attr("fill","#A52A2A");
 					} else if (sleepValue < ui.values[ 0 ]){
@@ -316,7 +317,7 @@ $( "#bmslider" ).slider({
                     var bmValue = $(obj).data('bm');
 
                     if(bmValue == -1){
-                    	$(obj).attr("fill","#BDBDBD");
+                    	$(obj).attr("fill","#D9D9D9");
                     } else if(bmValue > ui.values[ 1 ]){
 						$(obj).attr("fill","#A52A2A");
 					} else if (bmValue < ui.values[ 0 ]){
