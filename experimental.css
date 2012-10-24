@@ -1,7 +1,12 @@
 /**
  * @author Ravi
  */
-
+header
+{
+	font-size:2em;
+	margin-left: 200px;
+	margin-bottom: 20px;
+}
 
 .divsvg
 {
@@ -24,42 +29,32 @@
 {
 	float: left;
 	height:auto;
-	width:600px;
+	width:300px;
 }
 
 #right_content
 {
-	float:right;
+	float:left;
 	height:auto;
-	width:300px;
-}
-
-.red
-{
-background-color:#E00013;
-opacity: 0.5;
-display:block;
-}
-
-#labeldiv
-{
-	position:absolute;
-	margin-top: 445px;
-	margin-left: -30px;
+	width:600px;
 }
 
 ul
 {
-	 list-style:none;
+	list-style:none;
 }
-li {
-    float: left;
-	
-  }
-  
+li 
+{
+    margin-top: 10px;
+}
 
 .labels
 {
-	width:100px;
+	width:230px;
 	display:block;
+}
+
+.side_text
+{
+	font-size:0.8em;
 }

@@ -2,24 +2,17 @@
  * @author Ravi
  */
 
-
 $(document).ready( function() {
     var min=50;
     var max=150;
     var mid=100;
-	
+
+    //d3.selectAll("rect").attr("fill","#EE9A49");
+
 	var students = d3.csv('output.csv', function(csv) {
-	tabulate(csv, ["username","behavior", "medication", "sleep", "bm"]);
+	tabulate(csv, ["username","Behavior", "Medication", "Sleep", "BowelMovement"]);
 	// r is the number of rows in the csv (without considering the title row)
 	var r = csv.length;
-
-	var ages = d3.keys(csv[0]).filter(function(key) {
-    	return key != "username";
-  	});
-
-  	d3.selectAll("thead th").data(ages).on("click", function(k) {
-			   	tr.sort(function(a, b) { return (b[k] / b.behavior) - (a[k] / a.behavior); });
-	});
 
 	// loop through each row, 2 to 12, ignoring title row and going through all 11 rows
 	for(i = 2 ; i <= r+1; i++){
@@ -35,7 +28,7 @@ $(document).ready( function() {
 				.attr("id","rect_"+i+"_"+j);
 		
 		var rectid = "rect_"+i+"_"+j;
-			var name=csv[i-2];
+		var name=csv[i-2];
 				
 				//assign colors to each cell in a row. i.e. check the cell index (1 through 6) and use appropriate boundary conditions
 				if (rectid == "rect_"+i+"_"+1){
@@ -46,34 +39,30 @@ $(document).ready( function() {
 					d3.select("#"+svgParent)
 						.text(function(d) { return d.value; });
 				} else if (rectid == "rect_"+i+"_"+2){
-					d3.select("#"+rectid).attr("data-behavior", name.behavior);
-				    d3.select("#"+rectid).attr("class","behaviors");
+					d3.select("#"+rectid).attr("data-behavior", name.behavior)
+				                         .attr("class","behaviors")
+                                         //show tooltips for all the cells
+                                         .append("svg:title")
+                                            .text(name.behavior);
 				} else if (rectid == "rect_"+i+"_"+3){
-				    d3.select("#"+rectid).attr("data-meds", name.medication);
-				    d3.select("#"+rectid).attr("class","medications");
+				    d3.select("#"+rectid).attr("data-meds", name.medication)
+                                         .attr("class","medications")
+                                         .append("svg:title")
+                                            .text(name.medication);
 				} else if (rectid == "rect_"+i+"_"+4){
-					d3.select("#"+rectid).attr("data-sleep", name.sleep);
-				    d3.select("#"+rectid).attr("class","sleeps");
-				} /*else if (rectid == "rect_"+i+"_"+4){
-					if(name.seizures > 30){
-					d3.select("#"+rectid).attr("fill","#A52A2A");
-					} else if ( name.seizures < 20){
-					d3.select("#"+rectid).attr("fill","#41AB5D");
-					} else {
-					d3.select("#"+rectid).attr("fill","#EE9A49"); 
-					}
-				} */ else if (rectid == "rect_"+i+"_"+5) {
-					d3.select("#"+rectid).attr("data-bm", name.bm);
-				    d3.select("#"+rectid).attr("class","bms");
-				} 
-			
-			//show tooltips for all the cells
-			d3.selectAll("#"+rectid).append("svg:title")
-				.text(function(d) { return d.value; });
+					d3.select("#"+rectid).attr("data-sleep", name.sleep)
+                                         .attr("class","sleeps")
+                                         .append("svg:title")
+                                            .text(name.sleep);
+				} else if (rectid == "rect_"+i+"_"+5) {
+					d3.select("#"+rectid).attr("data-bm", name.bm)
+                                         .attr("class","bms")
+                                         .append("svg:title")
+                                            .text(name.bm);
+				}   
+		    }
+	}   
 
-		}
-		
-	}
 	//make all the cells in the table resizable. fix 3 levels of resize (50px, 100px, 150px)
     $( ".divsvg" ).resizable({ //make all the cells with class = "divsvg" as resizable
         maxHeight: 200,
@@ -156,13 +145,194 @@ $(document).ready( function() {
            // alert('resizing stopped');
         }
     });
-	
-	
+
+    $( "#behaviorslider" ).slider({
+            range: true,
+            orientation:"horizontal",
+            min: 0,
+            max: 1000,
+            step: 10,
+            values: [ 150, 500 ],
+            create: function( event, ui ) {
+                $('.behaviors').each(function(i, obj){
+                    var behValue = $(obj).data('behavior'); 
+                    if(behValue == -1){
+                        $(obj).attr("fill","#D9D9D9");
+                    } else if(behValue > 500){
+                        $(obj).attr("fill","#A52A2A");
+                    } else if (behValue < 150){
+                        $(obj).attr("fill","#41AB5D");
+                    } else {
+                        $(obj).attr("fill","#EE9A49"); 
+                    }
+                });
+            },
+            slide: function( event, ui ) {
+                $( "#count1" ).val( ui.values[ 0 ] + " - " + ui.values[ 1 ] );
+                $('.behaviors').each(function(i, obj){
+                    var behValue = $(obj).data('behavior');
+                    if(behValue == -1){
+                        $(obj).attr("fill","#D9D9D9");
+                    } else if(behValue > ui.values[ 1 ]){
+                        $(obj).attr("fill","#A52A2A");
+                    } else if (behValue < ui.values[ 0 ]){
+                        $(obj).attr("fill","#41AB5D");
+                    } else {
+                        $(obj).attr("fill","#EE9A49"); 
+                    }
+                });
+            }
+    });
+$( "#count1" ).val( $( "#behaviorslider" )
+                .slider( "values", 0 ) + " - " + $( "#behaviorslider" )
+                .slider( "values", 1 ) );
+
+$( "#medicationslider" ).slider({
+            range: true,
+            orientation:"horizontal",
+            min: 0,
+            max: 20,
+            step: 1,
+            values: [ 8, 10 ],
+            create: function( event, ui ) {
+                $('.medications').each(function(i, obj){
+                    var medValue = $(obj).data('meds');
+                    if(medValue == -1){
+                        $(obj).attr("fill","#D9D9D9");
+                    } else if(medValue > 10){
+                        $(obj).attr("fill","#A52A2A");
+                    } else if (medValue < 8){
+                        $(obj).attr("fill","#41AB5D");
+                    } else {
+                        $(obj).attr("fill","#EE9A49"); 
+                    }
+                });
+            },
+            slide: function( event, ui ) {
+                $( "#count2" ).val( ui.values[ 0 ] + " - " + ui.values[ 1 ] );
+                $('.medications').each(function(i, obj){
+                    var medValue = $(obj).data('meds');
+
+                    if(medValue == -1){
+                        $(obj).attr("fill","#D9D9D9");
+                    } else if(medValue > ui.values[ 1 ]){
+                        $(obj).attr("fill","#A52A2A");
+                    } else if (medValue < ui.values[ 0 ]){
+                        $(obj).attr("fill","#41AB5D");
+                    } else {
+                        $(obj).attr("fill","#EE9A49"); 
+                    }
+                });
+            }
+    });
+$( "#count2" ).val( $( "#medicationslider" )
+                .slider( "values", 0 ) + " - " + $( "#medicationslider" )
+                .slider( "values", 1 ) );
+
+$( "#sleepslider" ).slider({
+            range: true,
+            orientation:"horizontal",
+            min: 0,
+            max: 12,
+            step: 0.5,
+            values: [ 6.5, 8.5 ],
+            create: function( event, ui ) {
+                $('.sleeps').each(function(i, obj){
+                    var sleepValue = $(obj).data('sleep');
+                    if(sleepValue == -1){
+                        $(obj).attr("fill","#D9D9D9");
+                    } else if(sleepValue > 8.5){
+                        $(obj).attr("fill","#41AB5D");
+                    } else if (sleepValue < 6.5){
+                        $(obj).attr("fill","#A52A2A");
+                    } else {
+                        $(obj).attr("fill","#EE9A49"); 
+                    }
+                });
+            },
+            slide: function( event, ui ) {
+                $( "#count3" ).val( ui.values[ 0 ] + " - " + ui.values[ 1 ] );
+                $('.sleeps').each(function(i, obj){
+                    var sleepValue = $(obj).data('sleep');
+
+                    if(sleepValue == -1){
+                        $(obj).attr("fill","#D9D9D9");
+                    } else if(sleepValue > ui.values[ 1 ]){
+                        $(obj).attr("fill","#41AB5D");
+                    } else if (sleepValue < ui.values[ 0 ]){
+                        $(obj).attr("fill","#A52A2A");
+                    } else {
+                        $(obj).attr("fill","#EE9A49"); 
+                    }
+                });
+            }
+    });
+$( "#count3" ).val( $( "#sleepslider" )
+                .slider( "values", 0 ) + " - " + $( "#sleepslider" )
+                .slider( "values", 1 ) );
+
+$( "#bmslider" ).slider({
+            range: true,
+            orientation:"horizontal",
+            min: 0,
+            max: 1,
+            step: 0.01,
+            values: [ 0.7, 1 ],
+            create: function( event, ui ) {
+                $('.bms').each(function(i, obj){
+                    var bmValue = $(obj).data('bm');
+                    if(bmValue == -1){
+                        $(obj).attr("fill","#D9D9D9");
+                    } else if(bmValue > 1){
+                        $(obj).attr("fill","#A52A2A");
+                    } else if (bmValue < 0.7){
+                        $(obj).attr("fill","#41AB5D");
+                    } else {
+                        $(obj).attr("fill","#EE9A49"); 
+                    }
+                });
+            },
+            slide: function( event, ui ) {
+                $( "#count4" ).val( ui.values[ 0 ] + " - " + ui.values[ 1 ] );
+                $('.bms').each(function(i, obj){
+                    var bmValue = $(obj).data('bm');
+
+                    if(bmValue == -1){
+                        $(obj).attr("fill","#D9D9D9");
+                    } else if(bmValue > ui.values[ 1 ]){
+                        $(obj).attr("fill","#A52A2A");
+                    } else if (bmValue < ui.values[ 0 ]){
+                        $(obj).attr("fill","#41AB5D");
+                    } else {
+                        $(obj).attr("fill","#EE9A49"); 
+                    }
+                });
+            }
+    });
+$( "#count4" ).val( $( "#bmslider" )
+                .slider( "values", 0 ) + " - " + $( "#bmslider" )
+                .slider( "values", 1 ) );
+
+//remove usename from selection of click event
+var forsort = d3.keys(csv[0]).filter(function(key) {
+    return key != "username";
+});
+
+console.log(forsort);
+
+var tr = d3.selectAll("tbody tr");
+d3.selectAll("thead th").data(forsort).on("click", function(k) {
+    tr.sort(function(a,b){ 
+            return a[k] - b[k]; });
+    //tr.sort(d3.ascending);
+});
+
+
 });
 	
 
 function tabulate(data, columns){ //, ["behavior", "sleep", "seizures", "medicine", "bm"]	
-	var table = d3.select("#left_content").append("table"),
+	var table = d3.select("#right_content").append("table"),
 		thead = table.append("thead"),
 		tbody = table.append("tbody");
 
@@ -189,13 +359,29 @@ function tabulate(data, columns){ //, ["behavior", "sleep", "seizures", "medicin
         })
         .enter()
         .append("td");
+
+                        //for 
+    var synchronizedMouseOver = function() {
+        var celldata = $(this + " title");
+        console.log(celldata);
+
+        var hovertext = d3.select("#context_box p");
+        hovertext.text(celldata);
+     };
+
+    var synchronizedMouseOut = function() {
+        var hovertext = d3.select("#context_box p");
+        hovertext.text("");
+    };
     
 	var divSVG = d3.selectAll("td")
 					.append("div")
 						.attr("class","divsvg")
 					.append("svg:svg")
 						.attr("width", "100%")
-						.attr("height", "100%");
+						.attr("height", "100%")
+						.on('mouseover', synchronizedMouseOver)
+           				.on("mouseout", synchronizedMouseOut);
 	
 	//assign unique ID to all cells (including the non-SVG ones
 	//iterate through all the rows
@@ -211,137 +397,30 @@ function tabulate(data, columns){ //, ["behavior", "sleep", "seizures", "medicin
 				$(this).find("svg").attr("id","svg_"+ (parentIndex+2) +"_" + (index+1) );
 		});
     });
-	
+
     return table;
 }
 	
 
-$( "#behaviorslider" ).slider({
-            range: true,
-            orientation:"vertical",
-            min: 0,
-            max: 1000,
-            step: 10,
-            values: [ 300, 400 ],
-            slide: function( event, ui ) {
-                $( "#count1" ).val( ui.values[ 0 ] + " - " + ui.values[ 1 ] );
-                $('.behaviors').each(function(i, obj){
-                    var behValue = $(obj).data('behavior');
 
-                    if(behValue == -1){
-                    	$(obj).attr("fill","#D9D9D9");
-                    } else if(behValue > ui.values[ 1 ]){
-						$(obj).attr("fill","#A52A2A");
-					} else if (behValue < ui.values[ 0 ]){
-						$(obj).attr("fill","#41AB5D");
-					} else {
-						$(obj).attr("fill","#EE9A49"); 
-					}
-                });
-            }
-    });
-$( "#count1" ).val( $( "#behaviorslider" )
-				.slider( "values", 0 ) + " - " + $( "#behaviorslider" )
-				.slider( "values", 1 ) );
 /*var valor0 = $("#behaviorslider").slider( "values", 0); 
 var valor1 = $("#behaviorslider").slider( "values", 1); 
 console.log(valor0);       
 console.log(valor1); */
 
-$( "#medicationslider" ).slider({
-            range: true,
-            orientation:"vertical",
-            min: 0,
-            max: 20,
-            step: 1,
-            values: [ 7, 10 ],
-            slide: function( event, ui ) {
-                $( "#count2" ).val( ui.values[ 0 ] + " - " + ui.values[ 1 ] );
-                $('.medications').each(function(i, obj){
-                    var medValue = $(obj).data('meds');
 
-                    if(medValue == -1){
-                    	$(obj).attr("fill","#D9D9D9");
-                    } else if(medValue > ui.values[ 1 ]){
-						$(obj).attr("fill","#A52A2A");
-					} else if (medValue < ui.values[ 0 ]){
-						$(obj).attr("fill","#41AB5D");
-					} else {
-						$(obj).attr("fill","#EE9A49"); 
-					}
-                });
-            }
-    });
-$( "#count2" ).val( $( "#medicationslider" )
-				.slider( "values", 0 ) + " - " + $( "#medicationslider" )
-				.slider( "values", 1 ) );
 
-$( "#sleepslider" ).slider({
-            range: true,
-            orientation:"vertical",
-            min: 0,
-            max: 12,
-            step: 0.5,
-            values: [ 7, 8.5 ],
-            slide: function( event, ui ) {
-                $( "#count3" ).val( ui.values[ 0 ] + " - " + ui.values[ 1 ] );
-                $('.sleeps').each(function(i, obj){
-                    var sleepValue = $(obj).data('sleep');
-
-                    if(sleepValue == -1){
-                    	$(obj).attr("fill","#D9D9D9");
-                    } else if(sleepValue > ui.values[ 1 ]){
-						$(obj).attr("fill","#A52A2A");
-					} else if (sleepValue < ui.values[ 0 ]){
-						$(obj).attr("fill","#EE9A49");
-					} else {
-						$(obj).attr("fill","#41AB5D"); 
-					}
-                });
-            }
-    });
-$( "#count3" ).val( $( "#sleepslider" )
-				.slider( "values", 0 ) + " - " + $( "#sleepslider" )
-				.slider( "values", 1 ) );
-
-$( "#bmslider" ).slider({
-            range: true,
-            orientation:"vertical",
-            min: 0,
-            max: 1,
-            step: 0.01,
-            values: [ 0.7, 1 ],
-            slide: function( event, ui ) {
-                $( "#count4" ).val( ui.values[ 0 ] + " - " + ui.values[ 1 ] );
-                $('.bms').each(function(i, obj){
-                    var bmValue = $(obj).data('bm');
-
-                    if(bmValue == -1){
-                    	$(obj).attr("fill","#D9D9D9");
-                    } else if(bmValue > ui.values[ 1 ]){
-						$(obj).attr("fill","#A52A2A");
-					} else if (bmValue < ui.values[ 0 ]){
-						$(obj).attr("fill","#41AB5D");
-					} else {
-						$(obj).attr("fill","#EE9A49"); 
-					}
-                });
-            }
-    });
-$( "#count4" ).val( $( "#bmslider" )
-				.slider( "values", 0 ) + " - " + $( "#bmslider" )
-				.slider( "values", 1 ) );
-
-var context = d3.select("#right_content")
+var context = d3.select("#left_content")
 				.append("div")
 					.attr("id","context_box")
 				.append("p")
-					.text(function(d) {
+					.text("hi")
+					/*.text(function(d) {
 					
 									
 						var myMouseOverFunction = function() {
 							var selection = d3.select(this);
 							return d.value;
 						}		
-					});
+					});*/
 });

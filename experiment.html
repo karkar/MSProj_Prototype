@@ -3,65 +3,59 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Testftw!</title>
+<link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.9.0/themes/base/jquery-ui.css"/>
 <link rel="stylesheet" type="text/css" href="experimental.css" />
-<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.1/themes/base/jquery-ui.css"/>
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.js"></script>
-<script type="text/javascript" src="https://raw.github.com/mbostock/d3/master/d3.v2.min.js"></script>
-<script type="text/javascript" src="experimental.js"></script>
 </head>
 
 <body>
+<header>Visual Analytics tool for CfD</header>
 <div id="wrapper">
-<div id="left_content"></div>
-<div id="right_content"></div>
-</div>
-<div id="labeldiv">
-<ul id="labeltable">
-        <li class="labels">
-			<color style="color: #E00013;">red</color> <br/>
-			<color style="color: #339900;">green</color> <br/>
-			<color style="color: #FF9900;">orange</color> <br/>
-			<color style="color: #9E9696;">grey</color> 
-		</li>
-		 <li class="labels">
-			>400 <br/>
-			<300 </br>
-			300-400 </br>
-			no data </br>
-			<div id="behaviorslider"></div>
-			<label for="count1">Behavior count:</label>
-    		<input type="text" id="count1" style="border: 0; color: #f6931f; font-weight: bold;" />
-		</li>
-		<li class="labels">
-			>10 </br>
-			<7	</br>
-			7-10 </br>
-			no data </br>
-			<div id="medicationslider"></div>
-			<label for="count2">Meds count:</label>
-    		<input type="text" id="count2" style="border: 0; color: #f6931f; font-weight: bold;" />
-		</li>
-		<li class="labels">
-			>8.5 </br>
-			<7	 </br>
-			7-8.5 </br>
-			no data </br>
-			<div id="sleepslider"></div>
-			<label for="count3">Sleep avg:</label>
-    		<input type="text" id="count3" style="border: 0; color: #f6931f; font-weight: bold;" />
-		</li>
-		<li class="labels">
-			>1 </br>
-			<0.7 </br>
-			0.7-1 </br>
-			no data </br>
-			<div id="bmslider"></div>
-			<label for="count4">BM count:</label>
-    		<input type="text" id="count4" style="border: 0; color: #f6931f; font-weight: bold;" />	
-		</li>
-</ul>
+	<div id="left_content">
+		<div id="labeldiv">
+			<ul id="labeltable">
+	        	<li class="labels side_text">
+	        		Slide to set range:<br/>
+	        		Left side slider value sets the minimum threshold<br/>
+	        		Right side slider value sets the maximum threshold<br/>
+				</li>
+				 <li class="labels">
+					<div id="behaviorslider"></div>
+					<label class="side_text" for="count1">Behavior count:</label>
+		    		<input type="text" id="count1" style="border: 0; color: #1f82f6; font-weight: bold;" />
+				</li>
+				<li class="labels">
+					<div id="medicationslider"></div>
+					<label class="side_text" for="count2">Meds count:</label>
+		    		<input type="text" id="count2" style="border: 0; color: #1f82f6; font-weight: bold;" />
+				</li>
+				<li class="labels">
+					<div id="sleepslider"></div>
+					<label class="side_text" for="count3">Sleep avg:</label>
+		    		<input type="text" id="count3" style="border: 0; color: #1f82f6; font-weight: bold;" />
+				</li>
+				<li class="labels">
+					<div id="bmslider"></div>
+					<label class="side_text" for="count4">BM count:</label>
+		    		<input type="text" id="count4" style="border: 0; color: #1f82f6; font-weight: bold;" />	
+				</li>
+
+				<li class="labels side_text">
+					<color style="color: #A52A2A;">Red</color> signifies value greater than Maximum threshold.<br/>
+					<color style="color: #41AB5D;">Green</color> signifies value less than Minimum threshold.<br/>
+					<color style="color: #EE9A49;">Orange</color> signifies value between the two threshold.<br/>
+					<color style="color: #D9D9D9;">Grey</color> signifies missing data.
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div id="right_content"></div>
 </div>
 
+
+
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.0/jquery-ui.min.js"></script>
+<script type="text/javascript" src="https://raw.github.com/mbostock/d3/master/d3.v2.min.js"></script>
+<script type="text/javascript" src="experimental.js"></script>
 </body>
 </html>
