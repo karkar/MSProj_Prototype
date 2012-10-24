@@ -3,7 +3,7 @@
  */
 
 $(document).ready( function() {
-    var min=50;
+    var min=30;
     var max=150;
     var mid=100;
 

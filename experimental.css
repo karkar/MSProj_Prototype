@@ -12,7 +12,7 @@ header
 {
     width: 100px;
 	//height: 0px;
-    height: 20px;
+    height: 10px;
     overflow:hidden;
     //padding:50px;
     //background: rgba(0,0,255,0.3);
@@ -42,7 +42,10 @@ header
 #context_box
 {
 	min-height: 40px;
-	border: 1px solid;
+	border-top: 1px solid;
+	padding-left: 15px;
+	padding-top: 15px;
+	font-size: 14px;
 }
 
 #right_content
@@ -73,3 +76,22 @@ li
 	font-size:0.8em;
 }
 
+table 
+{
+	border-collapse: collapse;
+	border-spacing:0px;
+	padding: 0px;
+	font-size: 8px;
+}
+
+
+table tr
+{
+	border-spacing:0px;
+
+}
+
+.ui-resizable-s 
+{
+	height: 7px;
+}
