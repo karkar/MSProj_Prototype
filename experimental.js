@@ -315,10 +315,8 @@ $( "#count4" ).val( $( "#bmslider" )
 
 //remove usename from selection of click event
 var forsort = d3.keys(csv[0]).filter(function(key) {
-    return key != "username";
+    return key;
 });
-
-console.log(forsort);
 
 var tr = d3.selectAll("tbody tr");
 d3.selectAll("thead th").data(forsort).on("click", function(k) {
@@ -360,18 +358,18 @@ function tabulate(data, columns){ //, ["behavior", "sleep", "seizures", "medicin
         .enter()
         .append("td");
 
-                        //for 
-    var synchronizedMouseOver = function() {
-        var celldata = $(this + " title");
-        console.log(celldata);
 
-        var hovertext = d3.select("#context_box p");
-        hovertext.text(celldata);
+    var synchronizedMouseOver = function() {
+        var celldata = $(this).find('title').text()
+        //console.log(celldata);
+
+        var hovertext = $("#context_box");
+        hovertext.attr("style", "background-color:#D9D9D9").text(celldata);
      };
 
     var synchronizedMouseOut = function() {
-        var hovertext = d3.select("#context_box p");
-        hovertext.text("");
+        var hovertext = $("#context_box");
+        hovertext.removeAttr("style").text("");
     };
     
 	var divSVG = d3.selectAll("td")
@@ -408,19 +406,4 @@ var valor1 = $("#behaviorslider").slider( "values", 1);
 console.log(valor0);       
 console.log(valor1); */
 
-
-
-var context = d3.select("#left_content")
-				.append("div")
-					.attr("id","context_box")
-				.append("p")
-					.text("hi")
-					/*.text(function(d) {
-					
-									
-						var myMouseOverFunction = function() {
-							var selection = d3.select(this);
-							return d.value;
-						}		
-					});*/
 });
