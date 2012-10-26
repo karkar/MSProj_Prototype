@@ -10,7 +10,7 @@ $(document).ready( function() {
     //d3.selectAll("rect").attr("fill","#EE9A49");
 
 	var students = d3.csv('output.csv', function(csv) {
-	tabulate(csv, ["username","Behavior", "Medication", "Sleep", "BowelMovement"]);
+	tabulate(csv, ["studentid","Behavior", "Medication", "Sleep", "BowelMovement"]);
 	// r is the number of rows in the csv (without considering the title row)
 	var r = csv.length;
 
@@ -150,20 +150,24 @@ $(document).ready( function() {
             range: true,
             orientation:"horizontal",
             min: 0,
-            max: 1000,
+            max: 2000,
             step: 10,
-            values: [ 150, 500 ],
+            values: [ 150, 700 ],
             create: function( event, ui ) {
                 $('.behaviors').each(function(i, obj){
                     var behValue = $(obj).data('behavior'); 
-                    if(behValue == -1){
-                        $(obj).attr("fill","#D9D9D9");
-                    } else if(behValue > 500){
-                        $(obj).attr("fill","#A52A2A");
+                    if(behValue == 10000){
+                        $(obj).attr("fill","#D9D9D9")
+                              .attr("data-context", "missing");
+                    } else if(behValue > 700){
+                        $(obj).attr("fill","#A52A2A")
+                              .attr("data-context", "red");
                     } else if (behValue < 150){
-                        $(obj).attr("fill","#41AB5D");
+                        $(obj).attr("fill","#41AB5D")
+                              .attr("data-context", "green");
                     } else {
-                        $(obj).attr("fill","#EE9A49"); 
+                        $(obj).attr("fill","#EE9A49")
+                            .attr("data-context", "orange");
                     }
                 });
             },
@@ -171,147 +175,151 @@ $(document).ready( function() {
                 $( "#count1" ).val( ui.values[ 0 ] + " - " + ui.values[ 1 ] );
                 $('.behaviors').each(function(i, obj){
                     var behValue = $(obj).data('behavior');
-                    if(behValue == -1){
-                        $(obj).attr("fill","#D9D9D9");
+                    if(behValue == 10000){
+                        $(obj).attr("fill","#D9D9D9")
+                              .attr("data-context", "missing");
                     } else if(behValue > ui.values[ 1 ]){
-                        $(obj).attr("fill","#A52A2A");
+                        $(obj).attr("fill","#A52A2A")
+                              .attr("data-context", "red");
                     } else if (behValue < ui.values[ 0 ]){
-                        $(obj).attr("fill","#41AB5D");
+                        $(obj).attr("fill","#41AB5D")
+                              .attr("data-context", "green");
                     } else {
-                        $(obj).attr("fill","#EE9A49"); 
+                        $(obj).attr("fill","#EE9A49")
+                              .attr("data-context", "orange");
                     }
                 });
             }
     });
-$( "#count1" ).val( $( "#behaviorslider" )
-                .slider( "values", 0 ) + " - " + $( "#behaviorslider" )
-                .slider( "values", 1 ) );
+    $( "#count1" ).val( $( "#behaviorslider" )
+                    .slider( "values", 0 ) + " - " + $( "#behaviorslider" )
+                    .slider( "values", 1 ) );
 
-$( "#medicationslider" ).slider({
-            range: true,
-            orientation:"horizontal",
-            min: 0,
-            max: 20,
-            step: 1,
-            values: [ 8, 10 ],
-            create: function( event, ui ) {
-                $('.medications').each(function(i, obj){
-                    var medValue = $(obj).data('meds');
-                    if(medValue == -1){
-                        $(obj).attr("fill","#D9D9D9");
-                    } else if(medValue > 10){
-                        $(obj).attr("fill","#A52A2A");
-                    } else if (medValue < 8){
-                        $(obj).attr("fill","#41AB5D");
-                    } else {
-                        $(obj).attr("fill","#EE9A49"); 
-                    }
-                });
-            },
-            slide: function( event, ui ) {
-                $( "#count2" ).val( ui.values[ 0 ] + " - " + ui.values[ 1 ] );
-                $('.medications').each(function(i, obj){
-                    var medValue = $(obj).data('meds');
+    $( "#medicationslider" ).slider({
+                range: true,
+                orientation:"horizontal",
+                min: 0,
+                max: 25,
+                step: 1,
+                values: [ 7, 10 ],
+                create: function( event, ui ) {
+                    $('.medications').each(function(i, obj){
+                        var medValue = $(obj).data('meds');
+                        if(medValue == 10000){
+                            $(obj).attr("fill","#D9D9D9");
+                        } else if(medValue > 10){
+                            $(obj).attr("fill","#A52A2A");
+                        } else if (medValue < 7){
+                            $(obj).attr("fill","#41AB5D");
+                        } else {
+                            $(obj).attr("fill","#EE9A49"); 
+                        }
+                    });
+                },
+                slide: function( event, ui ) {
+                    $( "#count2" ).val( ui.values[ 0 ] + " - " + ui.values[ 1 ] );
+                    $('.medications').each(function(i, obj){
+                        var medValue = $(obj).data('meds');
 
-                    if(medValue == -1){
-                        $(obj).attr("fill","#D9D9D9");
-                    } else if(medValue > ui.values[ 1 ]){
-                        $(obj).attr("fill","#A52A2A");
-                    } else if (medValue < ui.values[ 0 ]){
-                        $(obj).attr("fill","#41AB5D");
-                    } else {
-                        $(obj).attr("fill","#EE9A49"); 
-                    }
-                });
-            }
-    });
-$( "#count2" ).val( $( "#medicationslider" )
-                .slider( "values", 0 ) + " - " + $( "#medicationslider" )
-                .slider( "values", 1 ) );
+                        if(medValue == 10000){
+                            $(obj).attr("fill","#D9D9D9");
+                        } else if(medValue > ui.values[ 1 ]){
+                            $(obj).attr("fill","#A52A2A");
+                        } else if (medValue < ui.values[ 0 ]){
+                            $(obj).attr("fill","#41AB5D");
+                        } else {
+                            $(obj).attr("fill","#EE9A49"); 
+                        }
+                    });
+                }
+        });
+    $( "#count2" ).val( $( "#medicationslider" )
+                    .slider( "values", 0 ) + " - " + $( "#medicationslider" )
+                    .slider( "values", 1 ) );
 
-$( "#sleepslider" ).slider({
-            range: true,
-            orientation:"horizontal",
-            min: 0,
-            max: 12,
-            step: 0.5,
-            values: [ 6.5, 8.5 ],
-            create: function( event, ui ) {
-                $('.sleeps').each(function(i, obj){
-                    var sleepValue = $(obj).data('sleep');
-                    if(sleepValue == -1){
-                        $(obj).attr("fill","#D9D9D9");
-                    } else if(sleepValue > 8.5){
-                        $(obj).attr("fill","#41AB5D");
-                    } else if (sleepValue < 6.5){
-                        $(obj).attr("fill","#A52A2A");
-                    } else {
-                        $(obj).attr("fill","#EE9A49"); 
-                    }
-                });
-            },
-            slide: function( event, ui ) {
-                $( "#count3" ).val( ui.values[ 0 ] + " - " + ui.values[ 1 ] );
-                $('.sleeps').each(function(i, obj){
-                    var sleepValue = $(obj).data('sleep');
+    $( "#sleepslider" ).slider({
+                range: true,
+                orientation:"horizontal",
+                min: 0,
+                max: 12,
+                step: 0.5,
+                values: [ 6.5, 8.5 ],
+                create: function( event, ui ) {
+                    $('.sleeps').each(function(i, obj){
+                        var sleepValue = $(obj).data('sleep');
+                        if(sleepValue == 10000){
+                            $(obj).attr("fill","#D9D9D9");
+                        } else if(sleepValue > 8.5){
+                            $(obj).attr("fill","#EE9A49");
+                        } else if (sleepValue < 6.5){
+                            $(obj).attr("fill","#A52A2A");
+                        } else {
+                            $(obj).attr("fill","#41AB5D"); 
+                        }
+                    });
+                },
+                slide: function( event, ui ) {
+                    $( "#count3" ).val( ui.values[ 0 ] + " - " + ui.values[ 1 ] );
+                    $('.sleeps').each(function(i, obj){
+                        var sleepValue = $(obj).data('sleep');
 
-                    if(sleepValue == -1){
-                        $(obj).attr("fill","#D9D9D9");
-                    } else if(sleepValue > ui.values[ 1 ]){
-                        $(obj).attr("fill","#41AB5D");
-                    } else if (sleepValue < ui.values[ 0 ]){
-                        $(obj).attr("fill","#A52A2A");
-                    } else {
-                        $(obj).attr("fill","#EE9A49"); 
-                    }
-                });
-            }
-    });
-$( "#count3" ).val( $( "#sleepslider" )
-                .slider( "values", 0 ) + " - " + $( "#sleepslider" )
-                .slider( "values", 1 ) );
+                        if(sleepValue == 10000){
+                            $(obj).attr("fill","#D9D9D9");
+                        } else if(sleepValue > ui.values[ 1 ]){
+                            $(obj).attr("fill","#EE9A49");
+                        } else if (sleepValue < ui.values[ 0 ]){
+                            $(obj).attr("fill","#A52A2A");
+                        } else {
+                            $(obj).attr("fill","#41AB5D"); 
+                        }
+                    });
+                }
+        });
+    $( "#count3" ).val( $( "#sleepslider" )
+                    .slider( "values", 0 ) + " - " + $( "#sleepslider" )
+                    .slider( "values", 1 ) );
 
-$( "#bmslider" ).slider({
-            range: true,
-            orientation:"horizontal",
-            min: 0,
-            max: 1,
-            step: 0.01,
-            values: [ 0.7, 1 ],
-            create: function( event, ui ) {
-                $('.bms').each(function(i, obj){
-                    var bmValue = $(obj).data('bm');
-                    if(bmValue == -1){
-                        $(obj).attr("fill","#D9D9D9");
-                    } else if(bmValue > 1){
-                        $(obj).attr("fill","#A52A2A");
-                    } else if (bmValue < 0.7){
-                        $(obj).attr("fill","#41AB5D");
-                    } else {
-                        $(obj).attr("fill","#EE9A49"); 
-                    }
-                });
-            },
-            slide: function( event, ui ) {
-                $( "#count4" ).val( ui.values[ 0 ] + " - " + ui.values[ 1 ] );
-                $('.bms').each(function(i, obj){
-                    var bmValue = $(obj).data('bm');
+    $( "#bmslider" ).slider({
+                range: true,
+                orientation:"horizontal",
+                min: 0,
+                max: 1,
+                step: 0.01,
+                values: [ 0.6, 0.8 ],
+                create: function( event, ui ) {
+                    $('.bms').each(function(i, obj){
+                        var bmValue = $(obj).data('bm');
+                        if(bmValue == 10000){
+                            $(obj).attr("fill","#D9D9D9");
+                        } else if(bmValue > 0.8){
+                            $(obj).attr("fill","#41AB5D");
+                        } else if (bmValue < 0.6){
+                            $(obj).attr("fill","#A52A2A");
+                        } else {
+                            $(obj).attr("fill","#EE9A49"); 
+                        }
+                    });
+                },
+                slide: function( event, ui ) {
+                    $( "#count4" ).val( ui.values[ 0 ] + " - " + ui.values[ 1 ] );
+                    $('.bms').each(function(i, obj){
+                        var bmValue = $(obj).data('bm');
 
-                    if(bmValue == -1){
-                        $(obj).attr("fill","#D9D9D9");
-                    } else if(bmValue > ui.values[ 1 ]){
-                        $(obj).attr("fill","#A52A2A");
-                    } else if (bmValue < ui.values[ 0 ]){
-                        $(obj).attr("fill","#41AB5D");
-                    } else {
-                        $(obj).attr("fill","#EE9A49"); 
-                    }
-                });
-            }
-    });
-$( "#count4" ).val( $( "#bmslider" )
-                .slider( "values", 0 ) + " - " + $( "#bmslider" )
-                .slider( "values", 1 ) );
+                        if(bmValue == 10000){
+                            $(obj).attr("fill","#D9D9D9");
+                        } else if(bmValue > ui.values[ 1 ]){
+                            $(obj).attr("fill","#41AB5D");
+                        } else if (bmValue < ui.values[ 0 ]){
+                            $(obj).attr("fill","#A52A2A");
+                        } else {
+                            $(obj).attr("fill","#EE9A49"); 
+                        }
+                    });
+                }
+        });
+    $( "#count4" ).val( $( "#bmslider" )
+                    .slider( "values", 0 ) + " - " + $( "#bmslider" )
+                    .slider( "values", 1 ) );
 
 //remove usename from selection of click event
 var forsort = d3.keys(csv[0]).filter(function(key) {
@@ -360,16 +368,56 @@ function tabulate(data, columns){ //, ["behavior", "sleep", "seizures", "medicin
 
 
     var synchronizedMouseOver = function() {
-        var celldata = $(this).find('title').text()
+        var celldata = $(this).find('title').text();
+        //var celltype = $(this).find('rect');
+        //console.log($(this).find('rect').attr("class"))//.find('rect').attr("id"));
         //console.log(celldata);
 
         var hovertext = $("#context_box");
-        hovertext.attr("style", "background-color:#D9D9D9").text(celldata);
+        hovertext.attr("style", "background-color:#D9D9D9")
+                .text(celldata);
+                /*.text(function(){
+                   if(celltype.attr("class") == "behaviors"){
+                        if(celltype.data("context") == "missing"){
+                            var context_text = "missing";
+                            celldata = celldata + context_text;
+                            return celldata;
+                        } else if(celltype.data("context") == "red"){
+                            var context_text = "red";
+                            celldata = celldata + context_text;
+                            return celldata;
+                        } else if(celltype.data("context") == "green"){
+                            var context_text = "green";
+                            celldata = celldata + context_text;
+                            return celldata;
+                        } else if(celltype.data("context") == "orange"){
+                            var context_text = "orange";
+                            celldata = celldata + context_text;
+                            return celldata;
+                        }
+                   } else if(){
+
+                   }
+               });*/
      };
 
     var synchronizedMouseOut = function() {
         var hovertext = $("#context_box");
         hovertext.removeAttr("style").text("");
+
+                                            /*.text(function() { 
+                                                var beh_datatext = null;
+                                                var beh_datapt = name.behavior;
+                                                if(beh_datapt == 10000){
+                                                    beh_datatext = "Data missing";
+                                                    return beh_datatext;
+                                                } else {
+                                                    console.log()
+                                                    return (beh_datatext + beh_datapt);
+                                                }
+                                                 
+                                            });*/
+
     };
     
 	var divSVG = d3.selectAll("td")
