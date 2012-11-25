@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Testftw!</title>
+<title>VA for CfD</title>
 <link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.9.0/themes/base/jquery-ui.css"/>
 <link rel="stylesheet" type="text/css" href="experimental.css" />
 </head>
@@ -13,34 +13,27 @@
 		<div id="labeldiv">
 			<ul id="labeltable">
 	        	<li class="labels side_text">
-	        		<h4>Range slider:</h4><br/>
-	        		Use sliders to set the range for each column:<br/>
+	        		<h4>Use sliders to set the range for each column:</h4>
 				</li>
 				 <li class="labels">
 					<div id="behaviorslider"></div>
-					<label class="side_text" for="count1">Behavior count:</label>
-		    		<input type="text" id="count1" style="border: 0; color: #1f82f6; font-weight: bold;" />
+					<label class="side_text" for="count1"><highlight>Behavior</highlight> count total for 1 month:</label>
+		    		<input type="text" id="count1" style="border: 0; color: #1f82f6; font-weight: bold;"/>
 				</li>
 				<li class="labels">
 					<div id="medicationslider"></div>
-					<label class="side_text" for="count2">Medication count:</label>
+					<label class="side_text" for="count2"><highlight>Medication</highlight> count for 1 month:</label>
 		    		<input type="text" id="count2" style="border: 0; color: #1f82f6; font-weight: bold;" />
 				</li>
 				<li class="labels">
 					<div id="sleepslider"></div>
-					<label class="side_text" for="count3">Sleep avg:</label>
+					<label class="side_text" for="count3"><highlight>Sleep</highlight> average per day per month:</label>
 		    		<input type="text" id="count3" style="border: 0; color: #1f82f6; font-weight: bold;" />
 				</li>
 				<li class="labels">
 					<div id="bmslider"></div>
-					<label class="side_text" for="count4">Bowel Movement count:</label>
+					<label class="side_text" for="count4"><highlight>Bowel Movement</highlight> per day per month:</label>
 		    		<input type="text" id="count4" style="border: 0; color: #1f82f6; font-weight: bold;" />	
-				</li>
-				<li class="labels side_text">
-					<color style="color: #A52A2A;">Red</color> signifies it is beyond harmful threshold.<br/>
-					<color style="color: #41AB5D;">Green</color> signifies it is within the acceptable threshols.<br/>
-					<color style="color: #EE9A49;">Orange</color> signifies it is between acceptable and harmful threshold.<br/>
-					<color style="color: #8B8989;">Grey</color> signifies missing data.
 				</li>
 			</ul>
 		</div>

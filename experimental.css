@@ -9,11 +9,13 @@ body
 header
 {
 	border: 1px solid;
-	text-align:center;
-	background-color: #539DC2;
+	text-align:center;	
+	background-color:#D9D9D9;
 	width: 800px;
 	font-size:2em;
 	margin-bottom: 10px;
+	padding-top: 5px;
+	padding-bottom: 5px;
 }
 
 .divsvg
@@ -47,6 +49,12 @@ header
 	padding-left: 20px;
 }
 
+highlight
+{
+	//text-decoration: underline;
+	font-weight: bold;
+}
+
 #context_box
 {
 	min-height: 40px;
@@ -54,6 +62,7 @@ header
 	padding-left: 15px;
 	padding-top: 15px;
 	font-size: 12px;
+	background-color:#D9D9D9;
 }
 
 #right_content
@@ -62,6 +71,7 @@ header
 	margin-left: 30px;
 	height:auto;
 	width:600px;
+	padding-bottom: 50px;
 }
 
 ul
@@ -92,6 +102,7 @@ h4
 input
 {
 	font-size:10px;
+	width: 50px;
 }
 
 table 
@@ -107,15 +118,58 @@ table
 table tr
 {
 	border-spacing:0px;
-
+	overflow: hidden;
+	text-overflow:clip;
+	white-space:nowrap;	
 }
 
-table th
+thead th
 {
-	font-size: 10px;
+	width: 10px;
+	overflow: hidden;
+	text-overflow:clip;
+	white-space:nowrap;	
+}
+th
+{
+	font-size: 12px;
+	text-decoration: underline;	
+}
+
+th:hover
+{
+	color:red;
 }
 
 .ui-resizable-s 
 {
 	height: 7px;
+}	
+
+#behaviorslider .ui-widget-header
+{
+	background:#EE9A49;
+}
+
+#medicationslider .ui-widget-header
+{
+	background:#EE9A49;
+}
+
+#sleepslider .ui-widget-header
+{
+	background:#41AB5D;
+}
+
+#bmslider .ui-widget-header
+{
+	background:#EE9A49;
+}
+
+.th_div{
+	min-width: 5px;
+	display: block;
+	overflow: hidden;
+	text-overflow: clip;	
+    white-space: nowrap;
 }
